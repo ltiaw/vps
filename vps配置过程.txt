@@ -1,0 +1,144 @@
+查看版本
+rpm -q centos-release
+cat /etc/redhat-release
+查ip地址
+curl -L tool.lu/ip
+测速
+bash <(curl -Lso- https://git.io/superspeed)
+wget -qO- --no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash
+修改时间
+date -s '2019-01-06 13:30:30'
+hwclock -w
+
+1.禁止访问百度
+# iptables -A OUTPUT -p tcp -d www.youtube.com --dport 80 -j DROP
+# iptables -L //生效
+ 
+2.允许访问百度
+# iptables -A OUTPUT -p tcp -d www.baidu.com --dport 80 -j ACCEP
+————————————————
+
+通过string匹配域名来过滤，范例如下：
+
+iptables -I OUTPUT -p tcp -m string --string "youtube.com" --algo bm -j DROP
+iptables -I OUTPUT -p udp -m string --string "youtube.com" --algo kmp -j DROP
+————————————————
+
+服务器限制8890连接数100个。
+-A INPUT -p tcp --dport 8890 -m connlimit --connlimit-above 100 -j DROP 
+-A INPUT -p tcp --dport 8890 -j ACCEPT 
+
+
+
+修改ssh端口
+vim /etc/ssh/sshd_config 
+
+semanage port -l|grep ssh 
+semanage port -a -t ssh_port_t -p tcp 19878
+yum -y install policycoreutils-python.x86_64
+
+sestatus -v 
+ 
+systemctl status firewalld
+开放防火墙
+firewall-cmd --permanent --add-port=57971/tcp
+firewall-cmd --permanent --add-port=80/tcp
+firewall-cmd --permanent --add-port=443/tcp
+
+firewall-cmd --reload 
+firewall-cmd --list-port
+
+systemctl restart sshd 
+systemctl restart firewalld.service 
+shutdown -r now
+
+
+BBR
+wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+v2ray一键伪装
+bash <(curl -sL https://raw.githubusercontent.com/hijkpw/scripts/master/centos_install_v2ray2.sh)
+
+v2ray 233脚本
+yum install -y curl
+bash <(curl -s -L https://git.io/v2ray.sh)
+
+
+
+
+
+systemclt enable v2ray
+
+查看啟動項
+systemctl list-unit-files|grep enabled
+
+
+
+
+
+平时不管是web还是系统产生的日志都可能导致洗盘爆满，所以我在这里分享一些基本常用清理linux日志的方法。
+
+echo > /var/log/wtmp //清除用户登录记录
+echo > /var/log/btmp //清除尝试登录记录
+echo>/var/log/lastlog //清除最近登录信息
+echo > /var/log/secure //登录信息
+echo > /var/log/messages
+echo>/var/log/syslog //记录系统日志的服务
+echo>/var/log/xferlog
+echo>/var/log/auth.log
+echo>/var/log/user.log
+cat /dev/null > /var/adm/sylog
+cat /dev/null > /var/log/maillog
+cat /dev/null > /var/log/openwebmail.log
+cat /dev/null > /var/log/mail.info
+echo>/var/run/utmp
+echo > .bash_history //清除保存的用户操作历史记录
+history -cw //清除所有历史
+
+
+    Linux查看History记录加时间戳小技巧  
+熟悉bash的都一定知道使用history可以输出你曾经输入过的历史命令，例如  
+[root@servyou_web ~]# history | more 
+./test.sh 
+vim test.sh 
+./test.sh 
+但是这里只显示了命令，并没有显示执行命令的时间，因为保存历史命令的~/.bash_history里并没有保存时间。
+
+通过设置环境变量 export HISTTIMEFORMAT="%F %T whoami " 给history加上时间戳
+
+[root@servyou_web ~]# export HISTTIMEFORMAT="%F %T whoami " 
+[root@servyou_web ~]# history | tail 
+2011-06-22 19:17:29 root 15 2011-06-22 19:13:02 root ./test.sh 
+2011-06-22 19:17:29 root 16 2011-06-22 19:13:02 root vim test.sh 
+2011-06-22 19:17:29 root 17 2011-06-22 19:13:02 root ./test.sh 
+2011-06-22 19:17:29 root 18 2011-06-22 19:13:02 root vim test.sh 
+2011-06-22 19:17:29 root 19 2011-06-22 19:13:02 root ./test.sh 
+2011-06-22 19:17:29 root 20 2011-06-22 19:13:02 root vim test.sh 
+2011-06-22 19:17:29 root 21 2011-06-22 19:13:02 root ./test.sh 
+2011-06-22 19:17:29 root 22 2011-06-22 19:13:02 root vim test.sh 
+2011-06-22 19:25:22 root 22 2011-06-22 19:13:02 root vim test.sh 
+2011-06-22 19:25:28 root history | tail
+
+可以看到，历史命令的时间戳已经加上了，但是.bash_history里并没有加上这个时间戳。其实这个时间记录是保存在当前shell进程内存里的，如果你logout并且重新登录的话会发现你上次登录时执行的那些命令的时间戳都为同一个值，即当时logout时的时间。
+
+尽管如此，对于加上screen的bash来说，这个时间戳仍然可以长时间有效的，毕竟只要你的server不重启，screen就不会退出，因而这些时间就能长时间保留。你也可以使用echo 'export HISTTIMEFORMAT="%F %T whoami "' >> /etc/profile 然后source一下就OK
+
+例二： vi /root/.bash_history
+
+例三：
+
+　1、修改/etc/profile将HISTSIZE=1000改成0或1
+
+　　清除用户home路径下。bash_history
+
+　　2、立即清空里的history当前历史命令的记录
+
+　　history -c
+
+　　3、bash执行命令时不是马上把命令名称写入history文件的，而是存放在内部的buffer中，等bash退出时会一并写入。
+
+　　不过，可以调用'history -w'命令要求bash立即更新history文件。
+
+　　history -w
+
+
+
