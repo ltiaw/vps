@@ -1,4 +1,15 @@
 #!/bin/bash
+# centos中转服务器监控动态IP脚本
+# Author: ltiaw<https://www.ltiaw.cf>
+
+echo "#############################################################"
+echo "#         centos中转服务器监控动态IP脚本                       #"
+echo "# 网址: https://www.ltiaw.cf                                 #"
+echo "# 作者: ltiaw                                                #"
+echo "#############################################################"
+echo ""
+
+yum -y install mailx
 old_ip=`cat /root/dip.txt`
 new_ip=`nslookup 27c51419-46f4-4ad1-9678-5be2170c8030.ddns.moonvm.net |tail -2|head -1|cut -d" " -f2`
 if [ $old_ip = $new_ip ]; then
