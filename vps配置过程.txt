@@ -1,32 +1,143 @@
+QQ邮箱 配置
+nwnrvlogfmstbjjf
+
+set from=ltiaw@qq.com
+set smtp=smtp.qq.com
+set smtp-auth-user=394310052@qq.com
+set smtp-auth-password=nwnrvlogfmstbjjf
+set smtp-auth=login
+
+set smtp=smtps://smtp.qq.com:465
+#set smtp-use-starttls
+set ssl-verify=ignore
+set nss-config-dir=/root/.certs
+
+
+
+
+
+
+
+
+
+
+
+
+
+安装源
+yum install -y epel-release 
+1、打开 /etc/yum.repos.d/epel.repo；
+/etc/yum.repos.d/epel.repo
+2、注释掉mirrorlist，取消注释baseurl；
+yum clear all
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 查看版本
+
 rpm -q centos-release
 cat /etc/redhat-release
 查ip地址
 curl -L tool.lu/ip
+curl ip.sb
+
+
+是否墙了
+curl -s -I -4 --connect-timeout 6 -m 6 --retry 0 http://www.189.cn | grep "Content-Type" | wc -l
+--------------------------------------------------------------------------------------------------------------------------
+moomvm IP 
+HINET 利用 API 自動化更新 IP 地址
+HINET 產品已提供更新 IP API，用戶可透過 SHELL 脚本自動化更新 IP，下面是一個運用指南。
+1. 前往 HINET 產品頁點擊生成 API URL（留意每次點擊會生成新 URL，舊的將失效）。
+2. 登錄 HINET 伺服器，確保已安裝 curl 和 nc，安裝指令如下：
+# CentOS
+yum -y install curl nmap-ncat
+# Ubuntu & Debian
+apt-get -y install curl nmap
+3. 下載 SHELL 脚本文件到伺服器，修改文件以添加 API URL。
+wget https://my.moonvm.com/ipchange.sh
+4. 之後 crontab -e 添加自動化任務，執行間隔時間不建議低於 30 分鐘。
+*/30 * * * * /root/ipchange.sh
+在完成上面步驟后，脚本會定期檢測 IP 可用性，在需要的時候自動更新 IP
+API 
+https://my.moonvm.com/ddns.php?product=1934&flag=changeip&iptoken=QE4SFTyttd
+
+
+
+
+
 测速
 bash <(curl -Lso- https://git.io/superspeed)
 wget -qO- --no-check-certificate https://raw.githubusercontent.com/oooldking/script/master/superbench.sh | bash
+
+
+
+
 修改时间
 date -s '2019-01-06 13:30:30'
 hwclock -w
+1、timedatectl查看时间各种状态：
+Local time: 四 2014-12-25 10:52:10 CST
+Universal time: 四 2014-12-25 02:52:10 UTC
+RTC time: 四 2014-12-25 02:52:10
+Timezone: Asia/Shanghai (CST, +0800)
+NTP enabled: yes
+NTP synchronized: yes
+RTC in local TZ: no
+2、timedatectl list-timezones: 列出所有时区
+3、timedatectl set-local-rtc 1 将硬件时钟调整为与本地时钟一致, 0 为设置为 UTC 时间
+4、timedatectl set-timezone Asia/Shanghai 设置系统时区为上海
+校准时间
+yum -y install ntp
+#通过阿里云时间服务器校准时间
+ntpdate ntp1.aliyun.com
+ntpdate -u cn.pool.ntp.org 
+另一个同时工具
+systemctl status chronyd
+————————————————
+www.anskillkown.tk
+
+
+
+
+3322动态
+lynx -mime_header -auth=xieltiaw:1987cb** "http://members.3322.net/dyndns/update?system=dyndns&hostname=ably888.f3322.net"
+
+
+
+
+
+
 
 1.禁止访问百度
 # iptables -A OUTPUT -p tcp -d www.youtube.com --dport 80 -j DROP
 # iptables -L //生效
- 
-2.允许访问百度
+ 2.允许访问百度
 # iptables -A OUTPUT -p tcp -d www.baidu.com --dport 80 -j ACCEP
 ————————————————
-
-通过string匹配域名来过滤，范例如下：
-
+过string匹配域名来过滤，范例如下：
 iptables -I OUTPUT -p tcp -m string --string "youtube.com" --algo bm -j DROP
 iptables -I OUTPUT -p udp -m string --string "youtube.com" --algo kmp -j DROP
 ————————————————
-
 服务器限制8890连接数100个。
 -A INPUT -p tcp --dport 8890 -m connlimit --connlimit-above 100 -j DROP 
 -A INPUT -p tcp --dport 8890 -j ACCEPT 
+
+
+
+
+
+
+
 
 
 
@@ -36,38 +147,35 @@ vim /etc/ssh/sshd_config
 semanage port -l|grep ssh 
 semanage port -a -t ssh_port_t -p tcp 19878
 yum -y install policycoreutils-python.x86_64
-
 sestatus -v 
- 
 systemctl status firewalld
 开放防火墙
 firewall-cmd --permanent --add-port=57971/tcp
 firewall-cmd --permanent --add-port=80/tcp
 firewall-cmd --permanent --add-port=443/tcp
-
 firewall-cmd --reload 
 firewall-cmd --list-port
-
 systemctl restart sshd 
 systemctl restart firewalld.service 
 shutdown -r now
 
 
-BBR
+BBR单版本
 wget --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && ./bbr.sh
+BBR多版本
+wget -N --no-check-certificate "https://github.com/ylx2016/Linux-NetSpeed/releases/download/sh/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
 v2ray一键伪装
 bash <(curl -sL https://raw.githubusercontent.com/hijkpw/scripts/master/centos_install_v2ray2.sh)
+
+v2ray官方
+bash <(curl -L -s https://install.direct/go.sh)
 
 v2ray 233脚本
 yum install -y curl
 bash <(curl -s -L https://git.io/v2ray.sh)
 
 
-
-
-
 systemclt enable v2ray
-
 查看啟動項
 systemctl list-unit-files|grep enabled
 
@@ -75,8 +183,22 @@ systemctl list-unit-files|grep enabled
 
 
 
-平时不管是web还是系统产生的日志都可能导致洗盘爆满，所以我在这里分享一些基本常用清理linux日志的方法。
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+平时不管是web还是系统产生的日志都可能导致洗盘爆满，所以我在这里分享一些基本常用清理linux日志的方法。
 echo > /var/log/wtmp //清除用户登录记录
 echo > /var/log/btmp //清除尝试登录记录
 echo>/var/log/lastlog //清除最近登录信息
@@ -95,50 +217,45 @@ echo > .bash_history //清除保存的用户操作历史记录
 history -cw //清除所有历史
 
 
-    Linux查看History记录加时间戳小技巧  
-熟悉bash的都一定知道使用history可以输出你曾经输入过的历史命令，例如  
-[root@servyou_web ~]# history | more 
-./test.sh 
-vim test.sh 
-./test.sh 
-但是这里只显示了命令，并没有显示执行命令的时间，因为保存历史命令的~/.bash_history里并没有保存时间。
 
-通过设置环境变量 export HISTTIMEFORMAT="%F %T whoami " 给history加上时间戳
 
-[root@servyou_web ~]# export HISTTIMEFORMAT="%F %T whoami " 
-[root@servyou_web ~]# history | tail 
-2011-06-22 19:17:29 root 15 2011-06-22 19:13:02 root ./test.sh 
-2011-06-22 19:17:29 root 16 2011-06-22 19:13:02 root vim test.sh 
-2011-06-22 19:17:29 root 17 2011-06-22 19:13:02 root ./test.sh 
-2011-06-22 19:17:29 root 18 2011-06-22 19:13:02 root vim test.sh 
-2011-06-22 19:17:29 root 19 2011-06-22 19:13:02 root ./test.sh 
-2011-06-22 19:17:29 root 20 2011-06-22 19:13:02 root vim test.sh 
-2011-06-22 19:17:29 root 21 2011-06-22 19:13:02 root ./test.sh 
-2011-06-22 19:17:29 root 22 2011-06-22 19:13:02 root vim test.sh 
-2011-06-22 19:25:22 root 22 2011-06-22 19:13:02 root vim test.sh 
-2011-06-22 19:25:28 root history | tail
 
-可以看到，历史命令的时间戳已经加上了，但是.bash_history里并没有加上这个时间戳。其实这个时间记录是保存在当前shell进程内存里的，如果你logout并且重新登录的话会发现你上次登录时执行的那些命令的时间戳都为同一个值，即当时logout时的时间。
+删除V2ray
+其中 systemd 和 sysv 二选一，取决于你的系统。
+#停用并卸载服务（systemd）：
+systemctl stop v2ray
+systemctl disable v2ray
+ #停用并卸载服务（sysv）：
+service v2ray stop
+update-rc.d -f v2ray remove
+Bash复制
+删除文件
+rm -rf /etc/v2ray/*  #(配置文件)
+rm -rf /usr/bin/v2ray/*  #(程序)
+rm -rf /var/log/v2ray/*  #(日志)
+rm -rf /lib/systemd/system/v2ray.service  #(systemd 启动项)
+rm -rf /etc/init.d/v2ray  #(sysv 启动项)
+JavaScript复制
+就这么简单。。。
 
-尽管如此，对于加上screen的bash来说，这个时间戳仍然可以长时间有效的，毕竟只要你的server不重启，screen就不会退出，因而这些时间就能长时间保留。你也可以使用echo 'export HISTTIMEFORMAT="%F %T whoami "' >> /etc/profile 然后source一下就OK
 
-例二： vi /root/.bash_history
 
-例三：
 
-　1、修改/etc/profile将HISTSIZE=1000改成0或1
+VPS 中转
+1.开启转发
+echo 1 > /proc/sys/net/ipv4/ip_forward
+2.添加端口
+firewall-cmd --permanent --add-port=10996/tcp
+firewall-cmd --permanent --add-port=10996/udp
+3.内网伪装
+firewall-cmd --permanent --add-masquerade
+4.设置转发端口目标IP
+firewall-cmd --permanent --add-forward-port=port=10996:proto=tcp:toport=10996:toaddr=61.223.89.83
+firewall-cmd --permanent --add-forward-port=port=10996:proto=udp:toport=10996:toaddr=61.223.89.83
+5.保存生效
+firewall-cmd --reload
 
-　　清除用户home路径下。bash_history
-
-　　2、立即清空里的history当前历史命令的记录
-
-　　history -c
-
-　　3、bash执行命令时不是马上把命令名称写入history文件的，而是存放在内部的buffer中，等bash退出时会一并写入。
-
-　　不过，可以调用'history -w'命令要求bash立即更新history文件。
-
-　　history -w
-
+获取域名IP
+nslookup 27c51419-46f4-4ad1-9678-5be2170c8030.ddns.moonvm.net |tail -2|head -1|cut -d" " -f2 >desip.txt
 
 

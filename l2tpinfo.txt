@@ -1,0 +1,14 @@
+Server IP: 103.137.35.64
+PSK      : kklol123
+Username : ltiaw3
+Password : SRu5L1wrJm
+
+If you want to modify user settings, please use below command(s):
+l2tp -a (Add a user)
+l2tp -d (Delete a user)
+l2tp -l (List all users)
+l2tp -m (Modify a user password)
+
+Welcome to visit our website: https://teddysun.com/448.html
+Enjoy it!
+
