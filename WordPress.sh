@@ -4,7 +4,7 @@
 
 echo "#############################################################"
 echo "#             CentOS 7/8 WordPress一键安装脚本                #"
-echo "# 网址: https://www.anskiilkow.cf                                 #"
+echo "# 网址: https://www.ltiaw.cf                                 #"
 echo "# 作者: ltiaw                                                #"
 echo "#############################################################"
 echo ""
