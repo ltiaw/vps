@@ -1,11 +1,11 @@
 #!/bin/bash
 # v2ray centos系统一键安装脚本
-# Author: hijk<https://www.ltiaw.cf>
+# Author: hijk<https://www.hijk.pw>
 
 echo "#############################################################"
 echo "#         CentOS 7/8 v2ray 带伪装一键安装脚本               #"
-echo "# 网址: https://www.ltiaw.cf                                 #"
-echo "# 作者: ltiaw         hijk                                       #"
+echo "# 网址: https://www.hijk.pw                                 #"
+echo "# 作者: hijk                                                #"
 echo "#############################################################"
 echo ""
 
@@ -142,7 +142,7 @@ function installV2ray()
     if [ ! -f /etc/v2ray/config.json ]; then
         bash <(curl -sL https://raw.githubusercontent.com/hijkpw/scripts/master/goV2.sh)
         if [ ! -f /etc/v2ray/config.json ]; then
-            echo "安装失败，请到 https://www.ltiaw.pw 网站反馈"
+            echo "安装失败，请到 https://www.hijk.pw 网站反馈"
             exit 1
         fi
     fi
@@ -207,7 +207,7 @@ function installNginx()
     fi
     res=`which pip3`
     if [ "$?" != "0" ]; then
-        echo -e " pip3安装失败，请到 ${red}https://www.ltiaw.cf${plain} 反馈"
+        echo -e " pip3安装失败，请到 ${red}https://www.hijk.pw${plain} 反馈"
         exit 1
     fi
     pip3 install certbot
@@ -217,7 +217,7 @@ function installNginx()
     fi
     certbot certonly --standalone --agree-tos --register-unsafely-without-email -d ${domain}
     if [ "$?" != "0" ]; then
-        echo -e " 获取证书失败，请到 ${red}https://www.ltiaw.cf${plain} 反馈"
+        echo -e " 获取证书失败，请到 ${red}https://www.hijk.pw${plain} 反馈"
         exit 1
     fi
 
@@ -230,23 +230,30 @@ user nginx;
 worker_processes auto;
 error_log /var/log/nginx/error.log;
 pid /run/nginx.pid;
+
 # Load dynamic modules. See /usr/share/doc/nginx/README.dynamic.
 include /usr/share/nginx/modules/*.conf;
+
 events {
     worker_connections 1024;
 }
+
 http {
     log_format  main  '\$remote_addr - \$remote_user [\$time_local] "\$request" '
                       '\$status \$body_bytes_sent "\$http_referer" '
                       '"\$http_user_agent" "\$http_x_forwarded_for"';
+
     access_log  /var/log/nginx/access.log  main;
+
     sendfile            on;
     tcp_nopush          on;
     tcp_nodelay         on;
     keepalive_timeout   65;
     types_hash_max_size 2048;
+
     include             /etc/nginx/mime.types;
     default_type        application/octet-stream;
+
     # Load modular configuration files from the /etc/nginx/conf.d directory.
     # See http://nginx.org/en/docs/ngx_core_module.html#include
     # for more information.
@@ -264,10 +271,12 @@ server {
     server_name ${domain};
     rewrite ^(.*) https://\$server_name:${port}\$1 permanent;
 }
+
 server {
     listen       ${port} ssl http2;
     server_name ${domain};
     charset utf-8;
+
     # ssl配置
     ssl_protocols TLSv1.1 TLSv1.2;
     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;
@@ -281,10 +290,12 @@ server {
     
     # placeholder
     # placeholder
+
     root /usr/share/nginx/html;
     location / {
         proxy_pass $site;
     }
+
     location ${path} {
       proxy_redirect off;
       proxy_pass http://127.0.0.1:${v2port};
@@ -315,7 +326,7 @@ EOF
     sleep 3
     res=`netstat -nltp | grep ${port} | grep nginx`
     if [ "${res}" = "" ]; then
-        echo -e "nginx启动失败！ 请到 ${red}https://www.ltiaw.cf${plain} 反馈"
+        echo -e "nginx启动失败！ 请到 ${red}https://www.hijk.pw${plain} 反馈"
         exit 1
     fi
 }
