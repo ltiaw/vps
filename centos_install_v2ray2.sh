@@ -4,8 +4,8 @@
 
 echo "#############################################################"
 echo "#         CentOS 7/8 v2ray 带伪装一键安装脚本               #"
-echo "# 网址: https://www.hijk.pw                                 #"
-echo "# 作者: hijk                                                #"
+echo "# 网址: https://www.ltiaw.pw                                 #"
+echo "# 作者: ltiaw                                                #"
 echo "#############################################################"
 echo ""
 
@@ -142,7 +142,7 @@ function installV2ray()
     if [ ! -f /etc/v2ray/config.json ]; then
         bash <(curl -sL https://raw.githubusercontent.com/hijkpw/scripts/master/goV2.sh)
         if [ ! -f /etc/v2ray/config.json ]; then
-            echo "安装失败，请到 https://www.hijk.pw 网站反馈"
+            echo "安装失败，请到 https://www.ltiaw.pw 网站反馈"
             exit 1
         fi
     fi
