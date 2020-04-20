@@ -1,17 +1,6 @@
 #!/bin/bash
-# centos中转服务器监控动态IP脚本
-# Author: ltiaw<https://www.ltiaw.cf>
-
-echo "#############################################################"
-echo "#         centos中转服务器监控动态IP脚本                       #"
-echo "# 网址: https://www.ltiaw.cf                                 #"
-echo "# 作者: ltiaw                                                #"
-echo "#############################################################"
-echo ""
-
-yum -y install mailx
 old_ip=`cat /root/dip.txt`
-new_ip=`nslookup 27c51419-46f4-4ad1-9678-5be2170c8030.ddns.moonvm.net |tail -2|head -1|cut -d" " -f2`
+new_ip=`nslookup ddns.tw88.tk |tail -2|head -1|cut -d" " -f2`
 if [ $old_ip = $new_ip ]; then
         echo "`date` 地址一样。不用换">>/var/log/sendmailog
         #echo "`date` 地址一样。不用换"
@@ -25,5 +14,5 @@ else
         firewall-cmd --permanent --add-forward-port=port=10996:proto=udp:toport=10996:toaddr=$new_ip
         firewall-cmd --reload
         echo "`date` 删除旧端口，新端口添加成功"
-        echo "`date` 服务器突然换IP了，中转更换成功:$new_ip" |mail -s "中转更换通知" 394310052@qq.com
+        echo "`date` 服务器突然换IP了，中转更换成功:$new_ip" |mail -s "【台湾200】中转更换通知" 394310052@qq.com
 fi

@@ -1,6 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+# TW 500 ipchange sendmail
+# by ltiaw
 
-API_URL="https://my.moonvm.com/ddns.php?product=1934&flag=changeip&iptoken=QE4SFTyttd"
+API_URL="https://my.moonvm.com/ddns.php?product=2056&flag=changeip&iptoken=pYPEuoUbTL"
 
 ipchange() {
         oldip=`curl ip.sb|awk -F. '$1<=255&&$2<=255&&$3<=255&&$4<=255&&length($0)<16 {print $0}'`
@@ -36,7 +38,7 @@ while [ $result -eq "0" ]; do
 	        result=1
 	else
         	echo $getip" badip,retry ipchange"
-        	echo "`date`当前服务器IP：$new_ip 被墙了，立即执行换IP程序" |mail -s "【台湾200】IP状态通知" 394310052@qq.com
+        	echo "`date`当前服务器IP：$new_ip 被墙了，立即执行换IP程序" |mail -s "【台湾500】IP状态通知" 394310052@qq.com
                 ipchange
                 sleep 5
 		break
@@ -54,7 +56,8 @@ if [ $old_ip = $new_ip ]; then
 else            
 	echo $new_ip >/root/ip.txt
         echo "`date`地址不一样">>/var/log/sendmailog
-        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾200】IP更换通知" 394310052@qq.com
-        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾200】IP更换通知" 2428186497@qq.com
-        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾200】IP更换通知" 2397338624@qq.com
+        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾500】IP更换通知" 394310052@qq.com
+        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾500】IP更换通知" 2428186497@qq.com
+        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾500】IP更换通知" 2397338624@qq.com
+        echo "`date`服务器突然换IP了，新的IP:$new_ip" |mail -s "【台湾500】IP更换通知" 759035650@qq.com
 fi
